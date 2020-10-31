@@ -1,10 +1,8 @@
 package com.vae.automation;
 
 import java.util.List;
+import java.util.Properties;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,97 +12,57 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Sleeper;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import com.vae.automation.base.BasePage;
+import com.vae.automation.pages.AccountRegistrationPage;
+import com.vae.automation.pages.HomePage;
+import com.vae.automation.utils.Constants;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import junit.framework.Assert;
 
 public class AccountRegistrationTest {
-	
+
+	AccountRegistrationPage accountRegistrationPage;
+	HomePage homePage;
+	BasePage basePage;
+	Constants constant;
+	Properties prop;
 	WebDriver driver;
 	
-	By signInLink = By.partialLinkText("Sign");
-	By emailField = By.xpath("//input[@name='email_create']");
-	By firstNameField = By.xpath("//input[@id='customer_firstname']");
-	By lastNameField = By.xpath("//input[@id='customer_lastname']");
-	By passwordField = By.xpath("//input[@id='passwd']");
-	By addressFirstNameField = By.xpath("//input[@id='firstname']");
-	By addressLastNameField = By.xpath("//input[@id='lastname']");
-	By addressField = By.xpath("//input[@id='address1']");
-	By cityField = By.xpath("//input[@id='city']");
-	By stateField = By.xpath("//select[@id='id_state']");
-	By zipField = By.xpath("//input[@id='postcode']");
-	By mobileField = By.xpath("//input[@id='phone_mobile']");
-	By registerButton = By.xpath("//button[@id='submitAccount']");
-	By successfulAccountCreateText = By.xpath("//p[@class='info-account']");
-	
-	@Before
+	@BeforeTest
 	public void setUp() {
-		WebDriverManager.chromedriver().setup();
-		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-	}
-	
-	@Test
-	public void accountRegistrationTest() {
-		driver.get("http://automationpractice.com/index.php");
-		doClick(signInLink);
-		clickWhenReady(emailField, 5);
-		doSendKeys(emailField, "abc99997@gmail.com");
-		clickWhenReady(By.xpath("//button[@id='SubmitCreate']"), 5);
-		clickWhenReady(firstNameField, 5);
-		doSendKeys(firstNameField, "Test");
-		doSendKeys(lastNameField, "Test");
-		doSendKeys(passwordField, "12345");
-		doSendKeys(addressFirstNameField, "Test");
-		doSendKeys(addressLastNameField, "Test");
-		doSendKeys(addressField, "123 ABC");
-		doSendKeys(cityField, "Main Street");
-		doSelectValuesByVisibleText(stateField, "Maryland");
-		clickWhenReady(zipField, 5);
-		doSendKeys(zipField, "12345");
-		doSendKeys(mobileField, "2401112222");
-		clickWhenReady(registerButton, 5);
-		String successfulAccountCreation = getElement(successfulAccountCreateText).getText();
-		System.out.println(successfulAccountCreation);
-		Assert.assertEquals("Welcome to your account. Here you can manage all of your personal information and orders.", successfulAccountCreation);
+		basePage = new BasePage();
+		prop = basePage.initialize_prop();
+		String browserName = prop.getProperty("browser");
+		driver = basePage.initialize_driver(browserName);
+		driver.get(prop.getProperty("url"));
+		
+		homePage = new HomePage(driver);
+		accountRegistrationPage = new AccountRegistrationPage(driver);
 		
 	}
+
+	@Test
+	public void accountRegistrationTest() {
+		homePage.clickOnSignIn();
+		accountRegistrationPage.createNewAccount("abc@gmail.com", "Bob", "Smith", "12345", "Bob", "Smith", "123 Main", "Cedarwood", "Virginia", "22222", "123456789");
+		String accountCreationText = accountRegistrationPage.getSuccessfulAccountCreation();
+		System.out.println("succcessful account registration message is : " + accountCreationText);
+		Assert.assertEquals(accountCreationText, Constants.ACCOUNT_REGISTRATION_TEXT);
+	}
 	
 	
-	@After
+	@AfterTest
 	public void tearDown() {
 		driver.quit();
 	}
 	
-	public WebElement getElement(By locator) {
-		WebElement element = driver.findElement(locator);
-		return element;
-	}
-	
-	public void doClick(By locator) {
-		getElement(locator).click();
-	}
-	
-	public void doSendKeys(By locator, String value) {
-		getElement(locator).sendKeys(value);
-	}
-	
-	public WebElement waitForElementToBeVisible(By locator, int timeOut){
-		WebElement element = getElement(locator);
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		return wait.until(ExpectedConditions.visibilityOf(element));
-	}
-	
-	public void clickWhenReady(By locator, int timeOut){
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-		element.click();
-	}
-		
-	public void doSelectValuesByVisibleText(By locator, String value){
-		Select select = new Select(getElement(locator));
-		select.selectByVisibleText(value);
-	}
 
 	
 }

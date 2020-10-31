@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2020-10-31T17:43:32Z" name="Default suite" finished-at="2020-10-31T17:43:47Z" duration-ms="14561">
+    <groups>
+    </groups>
+    <test started-at="2020-10-31T17:43:32Z" name="Default test" finished-at="2020-10-31T17:43:47Z" duration-ms="14561">
+      <class name="com.vae.automation.AccountRegistrationTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.vae.automation.AccountRegistrationTest@38afe297]" started-at="2020-10-31T17:43:32Z" name="setUp" finished-at="2020-10-31T17:43:40Z" duration-ms="8073" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="accountRegistrationTest()[pri:0, instance:com.vae.automation.AccountRegistrationTest@38afe297]" started-at="2020-10-31T17:43:40Z" name="accountRegistrationTest" finished-at="2020-10-31T17:43:46Z" duration-ms="5881" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- accountRegistrationTest -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.vae.automation.AccountRegistrationTest@38afe297]" started-at="2020-10-31T17:43:46Z" name="tearDown" finished-at="2020-10-31T17:43:47Z" duration-ms="595" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.vae.automation.AccountRegistrationTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
